@@ -25,6 +25,6 @@
 - ( NSString* )displayName;
 - ( NSString* )sessionID;
 - ( BOOL) connected;
-- ( void )disconnect;
+- ( void ) disconnect;
 
 @end

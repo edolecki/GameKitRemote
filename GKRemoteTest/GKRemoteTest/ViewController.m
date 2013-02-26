@@ -20,7 +20,7 @@
 
 #pragma mark - Send a message
 
-- (void)sendMessageToPeers:(NSString *)message {
+- ( void )sendMessageToPeers:( NSString * )message {
     if ( remote.connected == YES ) {
         [remote sendStringDataToPeers:message];
     }
@@ -28,7 +28,7 @@
 
 #pragma mark - Notifications
 
-- (void)connected {
+- ( void )connected {
     NSLog( @"connected" );
     connectionLabel.text = @"connected";
     connectButton.titleLabel.text = @"disconnect";
@@ -36,14 +36,14 @@
     dataStringText.text = @"data receieved";
 }
 
-- (void)disconnected {
+- ( void )disconnected {
     NSLog( @"disconnected" );
     connectionLabel.text = @"disconnected";
     connectButton.titleLabel.text = @"connect";
     dataStringText.text = @"";
 }
 
-- (void)cancelled {
+- ( void )cancelled {
     NSLog( @"cancelled connection" );
     if( remote.connected == NO ){
         connectButton.titleLabel.text = @"connect";
@@ -52,7 +52,7 @@
     }
 }
 
-- (void)dataReceived:(NSNotification *)notification {
+- ( void )dataReceived:( NSNotification * )notification {
     NSDictionary *tmp = notification.userInfo;
     NSString *stringData = [tmp objectForKey:@"data"];
     NSLog( @"Received: %@", stringData );
@@ -61,13 +61,13 @@
 
 #pragma mark - Typicals
 
-- (void)viewDidLoad {
+- ( void )viewDidLoad {
     [super viewDidLoad];
     [self registerForNotifications];
     remote = [[GameKitRemote alloc] initWithSession:@"abc123ZYX" displayName:@"Steel Panther"];
 }
 
-- (void)registerForNotifications {
+- ( void )registerForNotifications {
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(connected)
                                                  name:@"Connected"
@@ -86,7 +86,7 @@
                                                object:nil];
 }
 
-- (IBAction)connectAction:(id)sender {
+- ( IBAction )connectAction:( id )sender {
     if( remote.connected == NO ){
         [remote connect];
     } else {
@@ -94,7 +94,7 @@
     }
 }
 
-- (void)didReceiveMemoryWarning {
+- ( void )didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
 }
 

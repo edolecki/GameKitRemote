@@ -41,7 +41,7 @@ GKPeerPickerController *picker;
     return _sessionID;
 }
 
-- (BOOL)connected {
+- ( BOOL )connected {
     return _connected;
 }
 
@@ -56,7 +56,7 @@ GKPeerPickerController *picker;
 
 #pragma mark - Send Data To Peers
 
-- (void) sendDataToPeers:( NSData * )data
+- ( void ) sendDataToPeers:( NSData * )data
 {
     if( currentSession ){
         [self.currentSession sendDataToAllPeers:data
@@ -72,17 +72,17 @@ GKPeerPickerController *picker;
 
 #pragma mark - GameKit Delegates
 
-- (void)receiveData:(NSData *)data fromPeer:(NSString *)peer inSession:(GKSession *)session context:(void *)context {
+- ( void )receiveData:(NSData *)data fromPeer:(NSString *)peer inSession:(GKSession *)session context:(void *)context {
     NSString *dataReceived = [[NSString alloc] initWithData:data encoding:NSASCIIStringEncoding];    
     NSDictionary *dict = [NSDictionary dictionaryWithObject:dataReceived forKey:@"data"];
     [[NSNotificationCenter defaultCenter] postNotificationName:@"DataReceived" object:nil userInfo:dict];
 }
 
-- (void)peerPickerController:(GKPeerPickerController *)picker didSelectConnectionType:(GKPeerPickerConnectionType)type {
+- ( void )peerPickerController:(GKPeerPickerController *)picker didSelectConnectionType:(GKPeerPickerConnectionType)type {
     picker.connectionTypesMask = GKPeerPickerConnectionTypeNearby;
 }
 
-- (void)peerPickerController:(GKPeerPickerController *)picker didConnectPeer:(NSString *)peerID toSession:(GKSession *)session {
+- ( void )peerPickerController:(GKPeerPickerController *)picker didConnectPeer:(NSString *)peerID toSession:(GKSession *)session {
     self.currentSession = session;
     session.delegate = self;
     [session setDataReceiveHandler:self withContext:nil];
@@ -90,16 +90,16 @@ GKPeerPickerController *picker;
     [picker dismiss];
 }
 
-- (void)peerPickerControllerDidCancel:(GKPeerPickerController *)picker {
+- ( void )peerPickerControllerDidCancel:(GKPeerPickerController *)picker {
     [[NSNotificationCenter defaultCenter] postNotificationName:@"Cancelled" object:nil userInfo:nil];
     picker.delegate = nil;
 }
 
-- (void)session:(GKSession *)session didReceiveConnectionRequestFromPeer:(NSString *)peerID {
+- ( void )session:(GKSession *)session didReceiveConnectionRequestFromPeer:(NSString *)peerID {
     NSLog( @"Peer request from: %@", peerID );
 }
 
-- (void)session:(GKSession *)session peer:(NSString *)peerID didChangeState:(GKPeerConnectionState)state {
+- ( void )session:(GKSession *)session peer:(NSString *)peerID didChangeState:(GKPeerConnectionState)state {
     switch (state)
     {
         case GKPeerStateConnected:
@@ -129,11 +129,11 @@ GKPeerPickerController *picker;
     _connected = NO;
 }
 
-- (void)session:(GKSession *)session didFailWithError:(NSError *)error {
+- ( void )session:(GKSession *)session didFailWithError:(NSError *)error {
     NSLog( @"Error: %@", error );
 }
 
-- (GKSession *)peerPickerController:(GKPeerPickerController *)picker sessionForConnectionType:(GKPeerPickerConnectionType)type {
+- ( GKSession * )peerPickerController:(GKPeerPickerController *)picker sessionForConnectionType:(GKPeerPickerConnectionType)type {
     if(currentSession == nil){
         currentSession = [[GKSession alloc] initWithSessionID:_sessionID
                                                   displayName:_displayName

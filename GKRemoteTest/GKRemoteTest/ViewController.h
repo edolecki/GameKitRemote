@@ -15,11 +15,11 @@
     IBOutlet UITextView *dataStringText;
 }
 
-@property( nonatomic,retain ) GameKitRemote *remote;
-@property( nonatomic, retain) IBOutlet UILabel *connectionLabel;
+@property( nonatomic, retain ) GameKitRemote *remote;
+@property( nonatomic, retain ) IBOutlet UILabel *connectionLabel;
 @property( nonatomic, retain ) IBOutlet UIButton *connectButton;
 @property( nonatomic, retain ) IBOutlet UITextView *dataStringText;
 
-- (IBAction)connectAction:(id)sender;
+- ( IBAction )connectAction:( id )sender;
 
 @end
