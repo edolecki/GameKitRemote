@@ -3,7 +3,6 @@
 //  GKRemoteTest
 //
 //  Created by Eric Dolecki on 2/26/13.
-//  Copyright (c) 2013 Eric Dolecki. All rights reserved.
 //
 
 #import "ViewController.h"
@@ -15,6 +14,9 @@
 @implementation ViewController
 
 @synthesize remote;
+@synthesize connectionLabel;
+@synthesize connectButton;
+@synthesize dataStringText;
 
 #pragma mark - Send a message
 
@@ -27,17 +29,34 @@
 #pragma mark - Notifications
 
 - (void)connected {
-    NSLog(@"connected");
+    NSLog( @"connected" );
+    connectionLabel.text = @"connected";
+    connectButton.titleLabel.text = @"disconnect";
+    [self sendMessageToPeers:@"I'm connected and I am here!"];
+    dataStringText.text = @"data receieved";
 }
 
 - (void)disconnected {
-    NSLog(@"disconnected");
+    NSLog( @"disconnected" );
+    connectionLabel.text = @"disconnected";
+    connectButton.titleLabel.text = @"connect";
+    dataStringText.text = @"";
+}
+
+- (void)cancelled {
+    NSLog( @"cancelled connection" );
+    if( remote.connected == NO ){
+        connectButton.titleLabel.text = @"connect";
+    } else {
+        connectButton.titleLabel.text = @"disconnect";
+    }
 }
 
 - (void)dataReceived:(NSNotification *)notification {
     NSDictionary *tmp = notification.userInfo;
     NSString *stringData = [tmp objectForKey:@"data"];
     NSLog( @"Received: %@", stringData );
+    dataStringText.text = stringData;
 }
 
 #pragma mark - Typicals
@@ -45,7 +64,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self registerForNotifications];
-    remote = [[GameKitRemote alloc] initWithSession:@"abc123" displayName:@"Steel Panther"];
+    remote = [[GameKitRemote alloc] initWithSession:@"abc123ZYX" displayName:@"Steel Panther"];
 }
 
 - (void)registerForNotifications {
@@ -58,13 +77,21 @@
                                                  name:@"Disconnected"
                                                object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(cancelled)
+                                                 name:@"Cancelled"
+                                               object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(dataReceived:)
                                                  name:@"DataReceived"
                                                object:nil];
 }
 
-- (void)viewDidAppear:(BOOL)animated {
-    [remote connect];
+- (IBAction)connectAction:(id)sender {
+    if( remote.connected == NO ){
+        [remote connect];
+    } else {
+        [remote disconnect];
+    }
 }
 
 - (void)didReceiveMemoryWarning {

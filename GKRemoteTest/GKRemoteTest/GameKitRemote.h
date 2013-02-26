@@ -3,7 +3,6 @@
 //  VoiceWave
 //
 //  Created by Eric Dolecki on 2/15/13.
-//  Copyright (c) 2013 Eric Dolecki. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>
@@ -26,5 +25,6 @@
 - ( NSString* )displayName;
 - ( NSString* )sessionID;
 - ( BOOL) connected;
+- ( void )disconnect;
 
 @end

@@ -3,7 +3,6 @@
 //  VoiceWave
 //
 //  Created by Eric Dolecki on 2/15/13.
-//  Copyright (c) 2013 Eric Dolecki. All rights reserved.
 //
 
 #import "GameKitRemote.h"
@@ -92,8 +91,8 @@ GKPeerPickerController *picker;
 }
 
 - (void)peerPickerControllerDidCancel:(GKPeerPickerController *)picker {
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"Cancelled" object:nil userInfo:nil];
     picker.delegate = nil;
-    NSLog( @"Cancelled" );
 }
 
 - (void)session:(GKSession *)session didReceiveConnectionRequestFromPeer:(NSString *)peerID {
@@ -120,6 +119,14 @@ GKPeerPickerController *picker;
         default:
             break;
     }
+}
+
+- ( void )disconnect {
+    [currentSession disconnectFromAllPeers];
+    currentSession.available = NO;
+    [currentSession setDataReceiveHandler:nil withContext:nil];
+    currentSession.delegate = nil;
+    _connected = NO;
 }
 
 - (void)session:(GKSession *)session didFailWithError:(NSError *)error {
